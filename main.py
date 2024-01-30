@@ -12,16 +12,15 @@ bar: [int] = []
 bar_lock: Lock = Lock()
 
 
-bar_post_specs = {
-    "responses": {
-        "200": {
-            "description": "A list of integers",
-        }
-    },
-}
-
-
-@swag_from(bar_post_specs)
+@swag_from(
+    {
+        "responses": {
+            "200": {
+                "description": "A list of integers",
+            }
+        },
+    }
+)
 @app.route("/", methods=["POST"])
 def bar_post():
     """Adds 1 to bar"""
@@ -29,15 +28,16 @@ def bar_post():
         bar.append(1)
     return bar
 
-foo_put_specs = {
-    "responses": {
-        "200": {
-            "description": "An integer incremented by 1",
-        }
-    },
-}
 
-@swag_from(foo_put_specs)
+@swag_from(
+    {
+        "responses": {
+            "200": {
+                "description": "An integer incremented by 1",
+            }
+        },
+    }
+)
 @app.route("/", methods=["PUT"])
 def foo_put():
     """Increments foo by 1"""
@@ -47,16 +47,15 @@ def foo_put():
     return f"{foo}"
 
 
-
-foo_delete_specs = {
-    "responses": {
-        "200": {
-            "description": "0",
-        }
-    },
-}
-
-@swag_from(foo_delete_specs)
+@swag_from(
+    {
+        "responses": {
+            "200": {
+                "description": "0",
+            }
+        },
+    }
+)
 @app.route("/", methods=["DELETE"])
 def foo_delete():
     """Sets foo to 0"""
@@ -66,16 +65,15 @@ def foo_delete():
     return foo
 
 
-index_get_specs = {
-    "responses": {
-        "200": {
-            "description": "A string containing the values of foo and bar",
-        }
-    },
-}
-
-
-@swag_from(index_get_specs)
+@swag_from(
+    {
+        "responses": {
+            "200": {
+                "description": "A string containing the values of foo and bar",
+            }
+        },
+    }
+)
 @app.route("/", methods=["GET"])
 def index_get():
     """Returns a string containing the values of foo and bar"""
