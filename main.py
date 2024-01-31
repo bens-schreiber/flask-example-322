@@ -1,6 +1,9 @@
 from flask import Flask
 from threading import Lock
 from flasgger import Swagger, swag_from
+from flask import request
+
+from db import get_baz_from_db, update_baz_in_db
 
 app = Flask(__name__)
 swagger = Swagger(app)
@@ -63,6 +66,43 @@ def foo_delete():
         global foo
         foo = 0
     return foo
+
+@swag_from(
+    {
+        "responses": {
+            "200": {
+                "description": "The value of baz",
+            }
+        },
+    }
+)
+@app.route("/baz", methods=["GET"])
+def baz_get():
+    """Gets Baz from a DB"""
+    return get_baz_from_db()
+
+@swag_from(
+    {
+        "parameters": [
+            {
+                "name": "baz",
+                "in": "query",
+                "type": "string",
+                "required": True,
+            }
+        ],
+        "responses": {
+            "200": {
+                "description": "The value of baz",
+            }
+        },
+    }
+)
+@app.route("/baz", methods=["POST"])
+def baz_post():
+    """Updates Baz in the DB"""
+    baz = request.args.get('baz')
+    return update_baz_in_db(baz)
 
 
 @swag_from(
